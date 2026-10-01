@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class AppS16 {
+public class App17 {
 	
 	private static String url = "jdbc:sqlite:java26.db";
 	private static Scanner teclado = new Scanner(System.in);
@@ -28,6 +28,8 @@ public class AppS16 {
 						2.Listar alumnos
 						3.Modificar alumno
 						4.Eliminar alumno
+						5.Buscar alumno por DNI 
+						6.Listar alumnos por Ciclo
 						0.Salir
 						""");
 				
@@ -37,44 +39,42 @@ public class AppS16 {
 				switch (opcion) {
 				case 1 -> {
 					
+					System.out.println("Insertar Alumno");
+						
+					System.out.println("Introduce DNI");
+					String dni = teclado.nextLine();
 					
-						System.out.println("Insertar Alumno");
-							
-						System.out.println("Introduce DNI");
-						String dni = teclado.nextLine();
-						
-						System.out.println("Introduce NOMBRE");
-						String nombre = teclado.nextLine();
-						
-						System.out.println("Introduce APELLLIDO1");
-						String apellido1 = teclado.nextLine();
-						
-						System.out.println("Introduce APELLLIDO2");
-						String apellido2 = teclado.nextLine();
-						
-						System.out.println("Introduce CICLO");
-						String ciclo = teclado.nextLine();
-						
-						System.out.println("Introduce CURSO");
-						int curso = Integer.parseInt(teclado.nextLine());
-						
-						
-						String insertar = """
-								INSERT INTO alumno
-								(dni, nombre, apellido1, apellido2, ciclo, curso)
-								VALUES (?, ?, ?, ?, ?, ?)
-								""";
+					System.out.println("Introduce NOMBRE");
+					String nombre = teclado.nextLine();
+					
+					System.out.println("Introduce APELLLIDO1");
+					String apellido1 = teclado.nextLine();
+					
+					System.out.println("Introduce APELLLIDO2");
+					String apellido2 = teclado.nextLine();
+					
+					System.out.println("Introduce CICLO");
+					String ciclo = teclado.nextLine();
+					
+					System.out.println("Introduce CURSO");
+					int curso = Integer.parseInt(teclado.nextLine());
+					
+					
+					String insertar = """
+							INSERT INTO alumno
+							(dni, nombre, apellido1, apellido2, ciclo, curso)
+							VALUES (?, ?, ?, ?, ?, ?)
+							""";
 
-						PreparedStatement ps = conexion.prepareStatement(insertar);
-						ps.setString(1, dni);
-						ps.setString(2, nombre);
-						ps.setString(3, apellido1);
-						ps.setString(4, apellido2);
-						ps.setString(5, ciclo);
-						ps.setInt(6, curso);
-						ps.executeUpdate();
-						
-
+					PreparedStatement ps = conexion.prepareStatement(insertar);
+					ps.setString(1, dni);
+					ps.setString(2, nombre);
+					ps.setString(3, apellido1);
+					ps.setString(4, apellido2);
+					ps.setString(5, ciclo);
+					ps.setInt(6, curso);
+					ps.executeUpdate();
+					
 				}
 				case 2 -> {
 					System.out.println("Listado de alumnos");	
@@ -241,6 +241,65 @@ public class AppS16 {
 							System.out.println("No se encontró ningún alumno con ese DNI.");
 						}
 					}
+				}
+				
+				case 5 -> {
+					System.out.println("Introduce el DNI del alumno que deseas buscar: ");
+					String dniBuscar = teclado.nextLine();
+					
+					String sqlBuscar = " SELECT * FROM alumno WHERE dni =? ";
+					
+				PreparedStatement psBuscar = conexion.prepareStatement(sqlBuscar);
+						psBuscar.setString(1, dniBuscar); 
+				ResultSet resultadoBuscar	= psBuscar.executeQuery();
+					
+				if (resultadoBuscar.next()) {
+					System.out.println("Alumno Encontrado.");
+					
+					System.out.println(
+							"DNI: " +resultadoBuscar.getString("dni") +
+							"\nNombre: " +resultadoBuscar.getString("nombre") +
+							"\nPrimer apellido: " +resultadoBuscar.getString("apellido1") +
+							"\nSegundo apellido: " +resultadoBuscar.getString("apellido2") +
+							"\nCiclo: " +resultadoBuscar.getString("ciclo") +
+							"\nCurso: " +resultadoBuscar.getInt("curso"));
+
+					
+					} else {
+						System.out.println("No se encontró ningún alumno con ese DNI.");
+
+					}
+				}
+				case 6 -> {
+					System.out.println("Introduce el ciclo sobre el que deseas consultar: ");
+					String cicloBuscar = teclado.nextLine();
+					
+					String sqlCiclo = " SELECT * FROM alumno WHERE ciclo =? ORDER BY apellido1, apellido2,nombre";
+					
+				PreparedStatement psCiclo = conexion.prepareStatement(sqlCiclo);
+				psCiclo.setString(1, cicloBuscar); 
+				ResultSet resultadoCiclo	= psCiclo.executeQuery();
+					
+				boolean encontrado = false;
+				
+				while(resultadoCiclo.next()) {
+					
+					 encontrado = true;
+					 
+						System.out.println(
+								"DNI: " +resultadoCiclo.getString("dni") +
+								"\nNombre: " +resultadoCiclo.getString("nombre") +
+								"\nPrimer apellido: " +resultadoCiclo.getString("apellido1") +
+								"\nSegundo apellido: " +resultadoCiclo.getString("apellido2") +
+								"\nCurso: " +resultadoCiclo.getInt("curso"));
+				}
+				
+				if (!encontrado) {
+					
+					System.out.println("No hay alumnos del ciclo " + cicloBuscar);
+
+				}
+				
 				}
 				case 0 -> System.out.println("Saliendo del programa...");
 				default -> System.out.println("Opción incorrecta.");
