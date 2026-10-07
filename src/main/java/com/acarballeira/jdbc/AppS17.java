@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class App17 {
+public class AppS17 {
 	
 	private static String url = "jdbc:sqlite:java26.db";
 	private static Scanner teclado = new Scanner(System.in);
