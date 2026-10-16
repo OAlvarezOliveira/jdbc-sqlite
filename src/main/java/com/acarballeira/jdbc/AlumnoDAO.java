@@ -18,14 +18,14 @@ public class AlumnoDAO {
 	private static final String sqlEliminar = "DELETE FROM alumno WHERE dni = ?";
 
 	// Methods
-	private Alumno mapear(ResultSet rs) throws SQLException {
+	private static Alumno mapear(ResultSet rs) throws SQLException {
 		return new Alumno(rs.getString("dni"), rs.getString("nombre"), rs.getString("apellido1"),
 				rs.getString("apellido2"), rs.getString("ciclo"), rs.getInt("curso"), rs.getInt("eva1"),
 				rs.getInt("eva2"), rs.getInt("eva3"), rs.getInt("notaFinal"));
 
 	}
 
-	public boolean insertar(Alumno alumno) {
+	public static  void insertar(Alumno alumno) {
 
 		try (Connection conexion = ConexionBD.getConexion();
 				PreparedStatement preparacion = conexion.prepareStatement(sqlInsert)) {
@@ -39,19 +39,18 @@ public class AlumnoDAO {
 			preparacion.setInt(7, alumno.getEva1());
 			preparacion.setInt(8, alumno.getEva2());
 			preparacion.setInt(9, alumno.getEva3());
-			preparacion.setInt(10, alumno.getNotaFinal());
 
 			preparacion.executeUpdate();
-			return true;
+			
 
 		} catch (SQLException e) {
 			System.out.println("No se pudo insertar: " + e.getMessage());
-			return false;
+			
 		}
 
 	}
 
-	public Alumno buscarPorDni(String dni) {
+	public static Alumno buscarPorDni(String dni) {
 
 		try (Connection conexion = ConexionBD.getConexion();
 				PreparedStatement preparacion = conexion.prepareStatement(sqlBuscarDNI)) {
@@ -71,7 +70,7 @@ public class AlumnoDAO {
 		return null;
 	}
 
-	public ArrayList<Alumno> listarTodos() {
+	public static ArrayList<Alumno> listarTodos() {
 
 		ArrayList<Alumno> lista = new ArrayList<>();
 
@@ -91,7 +90,7 @@ public class AlumnoDAO {
 		return lista;
 	}
 
-	public ArrayList<Alumno> buscarPorCiclo(String ciclo) {
+	public static ArrayList<Alumno> buscarPorCiclo(String ciclo) {
 
 		ArrayList<Alumno> lista = new ArrayList<>();
 
@@ -113,7 +112,7 @@ public class AlumnoDAO {
 		return lista;
 	}
 
-	public ArrayList<Alumno> buscarPorTexto(String texto) {
+	public static ArrayList<Alumno> buscarPorTexto(String texto) {
 
 		ArrayList<Alumno> lista = new ArrayList<>();
 
@@ -136,7 +135,7 @@ public class AlumnoDAO {
 		return lista;
 	}
 
-	public boolean actualizar(Alumno alumno) {
+	public static boolean actualizar(Alumno alumno) {
 
 		int filasMod = 0;
 
@@ -165,7 +164,7 @@ public class AlumnoDAO {
 
 	}
 
-	public boolean eliminar(String dni) {
+	public static boolean eliminar(String dni) {
 		int filasMod = 0;
 
 		try (Connection conexion = ConexionBD.getConexion();
@@ -178,7 +177,7 @@ public class AlumnoDAO {
 
 		}
 
-		return filasMod > 0;
+		return (filasMod > 0);
 
 	}
 
