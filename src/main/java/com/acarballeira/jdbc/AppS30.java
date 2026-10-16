@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class S30 {
+public class AppS30 {
 	
 
 	public static void main(String[] args) {
