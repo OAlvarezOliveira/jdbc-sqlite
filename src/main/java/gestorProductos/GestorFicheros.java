@@ -90,6 +90,10 @@ public class GestorFicheros {
 						System.out.println("Error" + e2);
 						System.out.println("Linea ignorada: " + linea);
 						saltadas++;
+					} catch (SQLException e3) {
+						System.out.println("Error" + e3);
+						System.out.println("Linea ignorada: " + linea);
+						saltadas++;
 					}
 				}
 
@@ -98,7 +102,7 @@ public class GestorFicheros {
 					actualizados, saltadas);
 			completado = true;
 
-		} catch (IOException | SQLException e) {
+		} catch (IOException e) {
 
 			System.out.println("La operacion Importar ha fallado" + e);
 		}
