@@ -25,7 +25,7 @@ public class AlumnoDAO {
 
 	}
 
-	public static  void insertar(Alumno alumno) {
+	public static void insertar(Alumno alumno) throws SQLException {
 
 		try (Connection conexion = ConexionBD.getConexion();
 				PreparedStatement preparacion = conexion.prepareStatement(sqlInsert)) {
@@ -39,18 +39,14 @@ public class AlumnoDAO {
 			preparacion.setInt(7, alumno.getEva1());
 			preparacion.setInt(8, alumno.getEva2());
 			preparacion.setInt(9, alumno.getEva3());
+			preparacion.setInt(10, alumno.getNotaFinal());
 
 			preparacion.executeUpdate();
-			
-
-		} catch (SQLException e) {
-			System.out.println("No se pudo insertar: " + e.getMessage());
-			
 		}
 
 	}
 
-	public static Alumno buscarPorDni(String dni) {
+	public static Alumno buscarPorDni(String dni) throws SQLException {
 
 		try (Connection conexion = ConexionBD.getConexion();
 				PreparedStatement preparacion = conexion.prepareStatement(sqlBuscarDNI)) {
@@ -62,15 +58,12 @@ public class AlumnoDAO {
 					return mapear(rs);
 				}
 			}
-
-		} catch (SQLException e) {
-			System.err.println("Error al buscar: " + e.getMessage());
 		}
 
 		return null;
 	}
 
-	public static ArrayList<Alumno> listarTodos() {
+	public static ArrayList<Alumno> listarTodos() throws SQLException {
 
 		ArrayList<Alumno> lista = new ArrayList<>();
 
@@ -82,15 +75,12 @@ public class AlumnoDAO {
 					lista.add(mapear(rs));
 				}
 			}
-
-		} catch (SQLException e) {
-			System.err.println("Error al listar " + e.getMessage());
 		}
 
 		return lista;
 	}
 
-	public static ArrayList<Alumno> buscarPorCiclo(String ciclo) {
+	public static ArrayList<Alumno> buscarPorCiclo(String ciclo) throws SQLException {
 
 		ArrayList<Alumno> lista = new ArrayList<>();
 
@@ -104,15 +94,12 @@ public class AlumnoDAO {
 					lista.add(mapear(rs));
 				}
 			}
-
-		} catch (SQLException e) {
-			System.err.println("Error al listar " + e.getMessage());
 		}
 
 		return lista;
 	}
 
-	public static ArrayList<Alumno> buscarPorTexto(String texto) {
+	public static ArrayList<Alumno> buscarPorTexto(String texto) throws SQLException {
 
 		ArrayList<Alumno> lista = new ArrayList<>();
 
@@ -127,15 +114,12 @@ public class AlumnoDAO {
 					lista.add(mapear(rs));
 				}
 			}
-
-		} catch (SQLException e) {
-			System.err.println("Error al listar " + e.getMessage());
 		}
 
 		return lista;
 	}
 
-	public static boolean actualizar(Alumno alumno) {
+	public static boolean actualizar(Alumno alumno) throws SQLException {
 
 		int filasMod = 0;
 
@@ -154,27 +138,19 @@ public class AlumnoDAO {
 			preparacion.setString(10, alumno.getDni());
 
 			filasMod = preparacion.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("No se pudo actualizar:" + e.getMessage());
-
 		}
 
 		return filasMod > 0 ? true : false;
 
 	}
 
-	public static boolean eliminar(String dni) {
+	public static boolean eliminar(String dni) throws SQLException {
 		int filasMod = 0;
 
 		try (Connection conexion = ConexionBD.getConexion();
 				PreparedStatement preparacion = conexion.prepareStatement(sqlEliminar)) {
 			preparacion.setString(1,dni);
 			filasMod = preparacion.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("No se pudo eliminar:" + e.getMessage());
-
 		}
 
 		return (filasMod > 0);

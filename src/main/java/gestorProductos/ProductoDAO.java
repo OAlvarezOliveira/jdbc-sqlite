@@ -40,20 +40,17 @@ public class ProductoDAO {
 	        + "AVG(precio) AS PrecioMedio, MAX(precio) AS PrecioMaximo, MIN(precio) AS PrecioMinimo "
 	        + "FROM producto GROUP BY categoria";
 
-	public static void crearTabla() {
+	public static void crearTabla() throws SQLException {
 
 		try (Connection conexion = DriverManager.getConnection(URL);
 				PreparedStatement ps = conexion.prepareStatement(SQL_CREAR_TABLA)
 
 		) {
 			ps.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error: " + e);
 		}
 	}
 
-	public static boolean insertar(Producto p) {
-		boolean ejecutado;
+	public static void insertar(Producto p) throws SQLException {
 		try (Connection conexion = DriverManager.getConnection(URL);
 				PreparedStatement ps = conexion.prepareStatement(SQL_INSERTAR);) {
 			// (codigo, nombre, categoria, precio, stock)
@@ -63,13 +60,7 @@ public class ProductoDAO {
 			ps.setDouble(4, p.getPrecio());
 			ps.setInt(5, p.getStock());
 			ps.executeUpdate();
-			ejecutado = true;
-
-		} catch (SQLException e) {
-			System.out.println("Error: " + e);
-			ejecutado = false;
 		}
-		return ejecutado;
 	}
 
 	private static Producto mapear(ResultSet rs) throws SQLException {
@@ -77,7 +68,7 @@ public class ProductoDAO {
 				rs.getDouble("precio"), rs.getInt("stock"));
 	}
 
-	public static ArrayList<Producto> listarTodos() {
+	public static ArrayList<Producto> listarTodos() throws SQLException {
 
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 
@@ -89,15 +80,12 @@ public class ProductoDAO {
 					lista.add(mapear(rs));
 				}
 			}
-		} catch (SQLException e) {
-			System.out.println("Error: " + e);
-
 		}
 		return lista;
 
 	}
 
-	public static ArrayList<Producto> buscarPorNombre(String texto) {
+	public static ArrayList<Producto> buscarPorNombre(String texto) throws SQLException {
 
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 
@@ -110,9 +98,6 @@ public class ProductoDAO {
 					lista.add(mapear(rs));
 				}
 			}
-		} catch (SQLException e) {
-			System.out.println("Error: " + e);
-
 		}
 
 		return lista;
@@ -120,7 +105,7 @@ public class ProductoDAO {
 	}
 	
 	
-	public static Producto buscarPorCodigo(String codigo) {
+	public static Producto buscarPorCodigo(String codigo) throws SQLException {
 
 	    Producto productoEncontrado = null;
 
@@ -135,16 +120,13 @@ public class ProductoDAO {
 					 productoEncontrado = mapear(rs);
 				}
 			}
-		} catch (SQLException e) {
-			System.out.println("Error: " + e);
-
 		}
 
 		return productoEncontrado;
 
 	}
 
-	public static ArrayList<Producto> buscarPorCategoriaStockMenor(String categoria, int limite) {
+	public static ArrayList<Producto> buscarPorCategoriaStockMenor(String categoria, int limite) throws SQLException {
 
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 
@@ -158,16 +140,13 @@ public class ProductoDAO {
 					lista.add(mapear(rs));
 				}
 			}
-		} catch (SQLException e) {
-			System.out.println("Error: " + e);
-
 		}
 
 		return lista;
 
 	}
 	
-	public static boolean actualizar(Producto p){
+	public static boolean actualizar(Producto p) throws SQLException{
 
 	    boolean ejecutado = false;
 
@@ -180,15 +159,12 @@ public class ProductoDAO {
 	        ps.setString(5, p.getCodigo());
 
 	        ejecutado = ps.executeUpdate() > 0;
-
-	    } catch (SQLException e) {
-	        System.out.println("Error: " + e);
-	    }
+		}
 
 	    return ejecutado;
 	}
 
-	public static boolean actualizarPrecio(String codigo, double precio) {
+	public static boolean actualizarPrecio(String codigo, double precio) throws SQLException {
 
 	    boolean ejecutado = false;
 
@@ -198,16 +174,13 @@ public class ProductoDAO {
 	        ps.setString(2, codigo);
 
 	        ejecutado = ps.executeUpdate() > 0;
-
-	    } catch (SQLException e) {
-	        System.out.println("Error: " + e);
-	    }
+		}
 
 	    return ejecutado;
 	}
 	
 	
-	public static boolean eliminar(String codigo) {
+	public static boolean eliminar(String codigo) throws SQLException {
 
 	    boolean ejecutado = false;
 
@@ -216,16 +189,13 @@ public class ProductoDAO {
 	        ps.setString(1, codigo);
 
 	        ejecutado = ps.executeUpdate() > 0;
-
-	    } catch (SQLException e) {
-	        System.out.println("Error: " + e);
-	    }
+		}
 
 	    return ejecutado;
 	}
 	
 	
-	public static String estadisticas() {
+	public static String estadisticas() throws SQLException {
 	    String salida = "";
 
 	    try (Connection conexion = DriverManager.getConnection(URL);
@@ -245,16 +215,12 @@ public class ProductoDAO {
 	                salida = String.format("Total: %d, media: %.2f, máximo: %.2f, mínimo: %.2f", total, media, maximo, minimo);
 	            }
 	        }
-
-	    } catch (SQLException e) {
-	        System.out.println("Error: " + e.getMessage());
-	        salida = "Error al obtener estadísticas";
-	    }
+		}
 	    
 	    return salida;
 	}
 	
-	public static String estadisticasPorCategoria() {
+	public static String estadisticasPorCategoria() throws SQLException {
 	    String salida = "";
 
 	    try (Connection conexion = DriverManager.getConnection(URL);
@@ -274,11 +240,7 @@ public class ProductoDAO {
 		    if (salida.isEmpty()) {
 		        salida = "Sin productos";
 		    }
-
-	    }catch (SQLException e) {
-	        System.out.println("Error: " + e.getMessage());
-	        salida = "Error al obtener estadísticas";
-	    }
+		}
 
 	    return salida;
 	}

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -37,7 +38,7 @@ public class GestorFicheros {
 			}
 			completado = true;
 
-		} catch (IOException e) {
+		} catch (IOException | SQLException e) {
 
 			System.out.println("La operacion Exportar ha fallado" + e);
 		}
@@ -70,9 +71,8 @@ public class GestorFicheros {
 						Producto p = new Producto(campos[0], campos[1], campos[2], Double.parseDouble(campos[3]),
 								Integer.parseInt(campos[4]));
 						if (ProductoDAO.buscarPorCodigo(p.getCodigo()) == null) {
-							if (ProductoDAO.insertar(p)) {
-								insertados++;
-							}
+							ProductoDAO.insertar(p);
+							insertados++;
 						} else {
 							System.out.println("El codigo " + p.getCodigo() + " ya existe. Actualizar? (s/n)");
 							String actualiza = sc.nextLine();
@@ -98,7 +98,7 @@ public class GestorFicheros {
 					actualizados, saltadas);
 			completado = true;
 
-		} catch (IOException e) {
+		} catch (IOException | SQLException e) {
 
 			System.out.println("La operacion Importar ha fallado" + e);
 		}

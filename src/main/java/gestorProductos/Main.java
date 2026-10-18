@@ -1,5 +1,6 @@
 package gestorProductos;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,7 +10,11 @@ public class Main {
 
 		Scanner sc = new Scanner(System.in);
 		int opcion;
-		ProductoDAO.crearTabla();
+		try {
+			ProductoDAO.crearTabla();
+		} catch (SQLException e) {
+			System.out.println("No se pudo crear la tabla: " + e.getMessage());
+		}
 
 		do {
 			System.out.printf("" + "1. Insertar producto\n" + "2. Listar todos\n" + "3. Actualizar precio\n"
@@ -35,23 +40,25 @@ public class Main {
 
 					// String codigo, String nombre, String categoria, double precio, int stock)
 					Producto pInsertar = new Producto(codigo, nombre, categoria, precio, stock);
-					if (ProductoDAO.insertar(pInsertar)) {
-						System.out.println("Producto Insertado");
-					} else {
-						System.out.println("Producto No Insertado");
-					}
+					ProductoDAO.insertar(pInsertar);
+					System.out.println("Producto Insertado");
 				} catch (NumberFormatException e) {
 					System.out.println("Stock y precio deben ser numeros");
 				} catch (IllegalArgumentException e) {
 					System.out.println(e.getMessage());
+				} catch (SQLException e) {
+					System.out.println("Producto No Insertado: " + e.getMessage());
 				}
 				break;
 			case 2:
-				ArrayList<Producto> lista = new ArrayList<Producto>();
-				lista = ProductoDAO.listarTodos();
+				try {
+					ArrayList<Producto> lista = ProductoDAO.listarTodos();
 
-				for (Producto producto : lista) {
-					System.out.println(producto);
+					for (Producto producto : lista) {
+						System.out.println(producto);
+					}
+				} catch (SQLException e) {
+					System.out.println("No se pudo listar: " + e.getMessage());
 				}
 				break;
 			case 3:
@@ -59,14 +66,18 @@ public class Main {
 				String codigoNuevo = sc.nextLine();
 				System.out.println("Introduce el nuevo Precio");
 				double precioNuevo = Double.parseDouble(sc.nextLine());
-				if (ProductoDAO.actualizarPrecio(codigoNuevo, precioNuevo)) {
+				try {
+					if (ProductoDAO.actualizarPrecio(codigoNuevo, precioNuevo)) {
 
-					System.out.println("Precio actualizado");
+						System.out.println("Precio actualizado");
 
-				} else {
+					} else {
 
-					System.out.println("Precio no actualizado");
+						System.out.println("Precio no actualizado");
 
+					}
+				} catch (SQLException e) {
+					System.out.println("No se pudo actualizar: " + e.getMessage());
 				}
 				break;
 			case 4:

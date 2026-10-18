@@ -62,7 +62,7 @@ public class MainDAO {
 				break;
 			}
 		} catch (Exception e) {
-			System.err.println("Error al listar " + e.getMessage());
+			System.err.println("Error de base de datos: " + e.getMessage());
 		}
 
 	}
