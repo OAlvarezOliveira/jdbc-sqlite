@@ -12,7 +12,8 @@ public class Main {
 		ProductoDAO.crearTabla();
 
 		do {
-			System.out.printf("1. Insertar producto\n" + "2. Listar todos\n" + "3. Actualizar precio\n" + "0. Salir\n");
+			System.out.printf("" + "1. Insertar producto\n" + "2. Listar todos\n" + "3. Actualizar precio\n"
+					+ "4. Exportar DB a Archivo\n" + "5. Importar a DB desde Archivo\n" + "0. Salir\n");
 
 			System.out.println("Elige una opcion");
 			opcion = Integer.parseInt(sc.nextLine());
@@ -66,6 +67,21 @@ public class Main {
 
 					System.out.println("Precio no actualizado");
 
+				}
+				break;
+			case 4:
+				if (GestorFicheros.exportar()) {
+					System.out.println("Exportado correctamente");
+				} else {
+					System.out.println("No se pudo exportar");
+				}
+				break;
+
+			case 5:
+				if (GestorFicheros.importar(sc)) {
+					System.out.println("Importado correctamente");
+				} else {
+					System.out.println("No se pudo importar");
 				}
 				break;
 			case 0:

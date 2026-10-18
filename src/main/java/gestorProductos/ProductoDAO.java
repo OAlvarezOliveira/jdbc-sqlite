@@ -21,8 +21,12 @@ public class ProductoDAO {
 	private static final String SQL_LISTAR_TODOS = "SELECT * FROM producto ORDER BY nombre";
 
 	private static final String SQL_BUSCAR_POR_NOMBRE = "SELECT * FROM producto WHERE LOWER(nombre) LIKE LOWER(?)";
+	
+	private static final String SQL_BUSCAR_POR_CODIGO = "SELECT * FROM producto WHERE codigo = ?";
 
 	private static final String SQL_BUSCAR_POR_CATEGORIA = "SELECT * FROM producto WHERE LOWER(categoria) = LOWER(?) AND stock < ?";
+	
+	private static final String SQL_ACTUALIZAR = "UPDATE producto SET nombre = ?, categoria = ?, precio = ?, stock = ? WHERE codigo = ?";
 
 	private static final String SQL_ACTUALIZAR_PRECIO = "UPDATE producto SET precio = ? WHERE codigo = ?";
 
@@ -114,6 +118,31 @@ public class ProductoDAO {
 		return lista;
 
 	}
+	
+	
+	public static Producto buscarPorCodigo(String codigo) {
+
+	    Producto productoEncontrado = null;
+
+		try (Connection conexion = DriverManager.getConnection(URL);
+				PreparedStatement ps = conexion.prepareStatement(SQL_BUSCAR_POR_CODIGO)) {
+			ps.setString(1, codigo);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				
+				if (rs.next()) {
+					
+					 productoEncontrado = mapear(rs);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Error: " + e);
+
+		}
+
+		return productoEncontrado;
+
+	}
 
 	public static ArrayList<Producto> buscarPorCategoriaStockMenor(String categoria, int limite) {
 
@@ -136,6 +165,27 @@ public class ProductoDAO {
 
 		return lista;
 
+	}
+	
+	public static boolean actualizar(Producto p){
+
+	    boolean ejecutado = false;
+
+	    try (Connection conexion = DriverManager.getConnection(URL);
+	         PreparedStatement ps = conexion.prepareStatement(SQL_ACTUALIZAR)) {
+	        ps.setString(1, p.getNombre());
+	        ps.setString(2, p.getCategoria());
+	        ps.setDouble(3, p.getPrecio());
+	        ps.setInt(4, p.getStock());
+	        ps.setString(5, p.getCodigo());
+
+	        ejecutado = ps.executeUpdate() > 0;
+
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e);
+	    }
+
+	    return ejecutado;
 	}
 
 	public static boolean actualizarPrecio(String codigo, double precio) {
