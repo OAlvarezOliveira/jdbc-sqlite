@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
 public class App {
@@ -18,20 +17,21 @@ public class App {
 
 		String sql = "DELETE FROM alumno WHERE dni = ?";
 
-		try (Connection conexion = DriverManager.getConnection(url); Statement sentencia = conexion.createStatement()) {
+		try (Connection conexion = DriverManager.getConnection(url)) {
 
 			System.out.println("Introduce el DNI para eliminar el alumno asociado:");
 			dni = teclado.nextLine();
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.setString(1, dni);
+			try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+				ps.setString(1, dni);
 
-			if (ps.executeUpdate() > 0) {
+				if (ps.executeUpdate() > 0) {
 
-				System.err.println("Alumno Eliminado");
-			} else {
+					System.err.println("Alumno Eliminado");
+				} else {
 
-				System.err.println("Alumno no Eliminado");
+					System.err.println("Alumno no Eliminado");
 
+				}
 			}
 
 		} catch (SQLException e) {

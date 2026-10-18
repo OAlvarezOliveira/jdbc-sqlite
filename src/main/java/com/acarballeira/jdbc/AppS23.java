@@ -25,15 +25,16 @@ public class AppS23 {
 
 		try (Connection conexion = DriverManager.getConnection(URL)) {
 
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ResultSet resultado = ps.executeQuery();
+			try (PreparedStatement ps = conexion.prepareStatement(sql);
+					ResultSet resultado = ps.executeQuery()) {
 
-			while (resultado.next()) {
-				Alumno alumnoDB = new Alumno(resultado.getString("dni"), resultado.getString("nombre"),
-						resultado.getString("apellido1"), resultado.getString("apellido2"),
-						resultado.getString("ciclo"), resultado.getInt("curso"), resultado.getInt("eva1"),
-						resultado.getInt("eva2"), resultado.getInt("eva3"), resultado.getInt("notaFinal"));
-				listaAlumnos.add(alumnoDB);
+				while (resultado.next()) {
+					Alumno alumnoDB = new Alumno(resultado.getString("dni"), resultado.getString("nombre"),
+							resultado.getString("apellido1"), resultado.getString("apellido2"),
+							resultado.getString("ciclo"), resultado.getInt("curso"), resultado.getInt("eva1"),
+							resultado.getInt("eva2"), resultado.getInt("eva3"), resultado.getInt("notaFinal"));
+					listaAlumnos.add(alumnoDB);
+				}
 			}
 
 			System.out.printf("Numero de Alumnos guardados (Total): %d \n", listaAlumnos.size());
@@ -47,17 +48,19 @@ public class AppS23 {
 			System.out.println("Introduce parte del primer apellido:");
 			String textoBuscar = teclado.nextLine();
 
-			PreparedStatement psBusqueda = conexion.prepareStatement(sqlBusqueda);
+			try (PreparedStatement psBusqueda = conexion.prepareStatement(sqlBusqueda)) {
 
-			psBusqueda.setString(1, "%" + textoBuscar + "%");
+				psBusqueda.setString(1, "%" + textoBuscar + "%");
 
-			ResultSet rsBusqueda = psBusqueda.executeQuery();
+				try (ResultSet rsBusqueda = psBusqueda.executeQuery()) {
 
-			System.out.println("RESULTADOS:");
-			while (rsBusqueda.next()) {
+					System.out.println("RESULTADOS:");
+					while (rsBusqueda.next()) {
 
-				System.out.printf("%s - %s %s, %s\n", rsBusqueda.getString("dni"), rsBusqueda.getString("apellido1"),
-						rsBusqueda.getString("apellido2"), rsBusqueda.getString("nombre"));
+						System.out.printf("%s - %s %s, %s\n", rsBusqueda.getString("dni"), rsBusqueda.getString("apellido1"),
+								rsBusqueda.getString("apellido2"), rsBusqueda.getString("nombre"));
+					}
+				}
 			}
 
 		} catch (SQLException e) {

@@ -15,8 +15,7 @@ public class AppS17 {
 
 	public static void main(String[] args) {
 
-		try (Connection conexion = DriverManager.getConnection(url);
-			 Statement sentencia = conexion.createStatement()) {
+		try (Connection conexion = DriverManager.getConnection(url)) {
 			
 			int opcion;
 			
@@ -66,39 +65,42 @@ public class AppS17 {
 							VALUES (?, ?, ?, ?, ?, ?)
 							""";
 
-					PreparedStatement ps = conexion.prepareStatement(insertar);
-					ps.setString(1, dni);
-					ps.setString(2, nombre);
-					ps.setString(3, apellido1);
-					ps.setString(4, apellido2);
-					ps.setString(5, ciclo);
-					ps.setInt(6, curso);
-					ps.executeUpdate();
+					try (PreparedStatement ps = conexion.prepareStatement(insertar)) {
+						ps.setString(1, dni);
+						ps.setString(2, nombre);
+						ps.setString(3, apellido1);
+						ps.setString(4, apellido2);
+						ps.setString(5, ciclo);
+						ps.setInt(6, curso);
+						ps.executeUpdate();
+					}
 					
 				}
 				case 2 -> {
 					System.out.println("Listado de alumnos");	
 					
-					ResultSet resultado = sentencia.executeQuery("SELECT * FROM alumno ORDER BY apellido1, apellido2, nombre");
+					try (Statement sentencia = conexion.createStatement();
+						 ResultSet resultado = sentencia.executeQuery("SELECT * FROM alumno ORDER BY apellido1, apellido2, nombre")) {
 						
-					while (resultado.next()) {
-						Object eva1 = resultado.getObject("eva1");
-						Object eva2 = resultado.getObject("eva2");
-						Object eva3 = resultado.getObject("eva3");
-						Object notaFinalBD = resultado.getObject("notaFinal");
+						while (resultado.next()) {
+							Object eva1 = resultado.getObject("eva1");
+							Object eva2 = resultado.getObject("eva2");
+							Object eva3 = resultado.getObject("eva3");
+							Object notaFinalBD = resultado.getObject("notaFinal");
 
-						System.out.println(
-							resultado.getString("dni") + " - " +
-							resultado.getString("apellido1") + " " +
-							resultado.getString("apellido2") + ", " +
-							resultado.getString("nombre") + " - " +
-							resultado.getString("ciclo") + " - Curso " +
-							resultado.getInt("curso") + " - Notas: " +
-							(eva1 == null ? "sin nota" : eva1) + ", " +
-							(eva2 == null ? "sin nota" : eva2) + ", " +
-							(eva3 == null ? "sin nota" : eva3) + " - Final: " +
-							(notaFinalBD == null ? "sin calcular" : notaFinalBD)
-						);
+							System.out.println(
+								resultado.getString("dni") + " - " +
+								resultado.getString("apellido1") + " " +
+								resultado.getString("apellido2") + ", " +
+								resultado.getString("nombre") + " - " +
+								resultado.getString("ciclo") + " - Curso " +
+								resultado.getInt("curso") + " - Notas: " +
+								(eva1 == null ? "sin nota" : eva1) + ", " +
+								(eva2 == null ? "sin nota" : eva2) + ", " +
+								(eva3 == null ? "sin nota" : eva3) + " - Final: " +
+								(notaFinalBD == null ? "sin calcular" : notaFinalBD)
+							);
+						}
 					}
 				}
 				case 3 -> {
@@ -249,25 +251,25 @@ public class AppS17 {
 					
 					String sqlBuscar = " SELECT * FROM alumno WHERE dni =? ";
 					
-				PreparedStatement psBuscar = conexion.prepareStatement(sqlBuscar);
+					try (PreparedStatement psBuscar = conexion.prepareStatement(sqlBuscar)) {
 						psBuscar.setString(1, dniBuscar); 
-				ResultSet resultadoBuscar	= psBuscar.executeQuery();
-					
-				if (resultadoBuscar.next()) {
-					System.out.println("Alumno Encontrado.");
-					
-					System.out.println(
-							"DNI: " +resultadoBuscar.getString("dni") +
-							"\nNombre: " +resultadoBuscar.getString("nombre") +
-							"\nPrimer apellido: " +resultadoBuscar.getString("apellido1") +
-							"\nSegundo apellido: " +resultadoBuscar.getString("apellido2") +
-							"\nCiclo: " +resultadoBuscar.getString("ciclo") +
-							"\nCurso: " +resultadoBuscar.getInt("curso"));
-
-					
-					} else {
-						System.out.println("No se encontró ningún alumno con ese DNI.");
-
+						try (ResultSet resultadoBuscar = psBuscar.executeQuery()) {
+							
+							if (resultadoBuscar.next()) {
+								System.out.println("Alumno Encontrado.");
+								
+								System.out.println(
+										"DNI: " +resultadoBuscar.getString("dni") +
+										"\nNombre: " +resultadoBuscar.getString("nombre") +
+										"\nPrimer apellido: " +resultadoBuscar.getString("apellido1") +
+										"\nSegundo apellido: " +resultadoBuscar.getString("apellido2") +
+										"\nCiclo: " +resultadoBuscar.getString("ciclo") +
+										"\nCurso: " +resultadoBuscar.getInt("curso"));
+								
+							} else {
+								System.out.println("No se encontró ningún alumno con ese DNI.");
+							}
+						}
 					}
 				}
 				case 6 -> {
@@ -276,30 +278,29 @@ public class AppS17 {
 					
 					String sqlCiclo = " SELECT * FROM alumno WHERE ciclo =? ORDER BY apellido1, apellido2,nombre";
 					
-				PreparedStatement psCiclo = conexion.prepareStatement(sqlCiclo);
-				psCiclo.setString(1, cicloBuscar); 
-				ResultSet resultadoCiclo	= psCiclo.executeQuery();
-					
-				boolean encontrado = false;
-				
-				while(resultadoCiclo.next()) {
-					
-					 encontrado = true;
-					 
-						System.out.println(
-								"DNI: " +resultadoCiclo.getString("dni") +
-								"\nNombre: " +resultadoCiclo.getString("nombre") +
-								"\nPrimer apellido: " +resultadoCiclo.getString("apellido1") +
-								"\nSegundo apellido: " +resultadoCiclo.getString("apellido2") +
-								"\nCurso: " +resultadoCiclo.getInt("curso"));
-				}
-				
-				if (!encontrado) {
-					
-					System.out.println("No hay alumnos del ciclo " + cicloBuscar);
-
-				}
-				
+					try (PreparedStatement psCiclo = conexion.prepareStatement(sqlCiclo)) {
+						psCiclo.setString(1, cicloBuscar); 
+						try (ResultSet resultadoCiclo = psCiclo.executeQuery()) {
+							
+							boolean encontrado = false;
+							
+							while(resultadoCiclo.next()) {
+								
+								encontrado = true;
+								
+								System.out.println(
+										"DNI: " +resultadoCiclo.getString("dni") +
+										"\nNombre: " +resultadoCiclo.getString("nombre") +
+										"\nPrimer apellido: " +resultadoCiclo.getString("apellido1") +
+										"\nSegundo apellido: " +resultadoCiclo.getString("apellido2") +
+										"\nCurso: " +resultadoCiclo.getInt("curso"));
+							}
+							
+							if (!encontrado) {
+								System.out.println("No hay alumnos del ciclo " + cicloBuscar);
+							}
+						}
+					}
 				}
 				case 0 -> System.out.println("Saliendo del programa...");
 				default -> System.out.println("Opción incorrecta.");

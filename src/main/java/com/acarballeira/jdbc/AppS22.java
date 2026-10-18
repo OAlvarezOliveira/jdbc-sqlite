@@ -21,8 +21,8 @@ public class AppS22 {
 		try (Connection conexion = DriverManager.getConnection(URL);){
 			
 			String sql = "SELECT * FROM alumno";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ResultSet resultado = ps.executeQuery();
+			try (PreparedStatement ps = conexion.prepareStatement(sql);
+					ResultSet resultado = ps.executeQuery()) {
 			
 			while(resultado.next()) {
 				
@@ -41,6 +41,7 @@ public class AppS22 {
 	            
 	            listaAlumnos.add(alumnoDB);
 
+			}
 			}
 			
 			System.out.printf("Numero de Alumnos guardados: %d \n",listaAlumnos.size());

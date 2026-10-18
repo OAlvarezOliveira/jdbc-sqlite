@@ -27,26 +27,29 @@ public class RetoGestionAlumnos {
 			System.out.println("Introduce el Apellido del alumno a buscar: "); 
 			String apellido1 = teclado.nextLine(); 
 
-			PreparedStatement psApellidos = conexion.prepareStatement(sqlBusquedaApellido); 
-			psApellidos.setString(1, "%" + apellido1 + "%");
-			ResultSet rsApellidos = psApellidos.executeQuery(); 
+			try (PreparedStatement psApellidos = conexion.prepareStatement(sqlBusquedaApellido)) {
+				psApellidos.setString(1, "%" + apellido1 + "%");
+				try (ResultSet rsApellidos = psApellidos.executeQuery()) {
 
-			System.out.println("Resultado de la Busqueda por apellido1"); 
+				System.out.println("Resultado de la Busqueda por apellido1"); 
 
-			while (rsApellidos.next()) { 
-			    System.out.printf("dni: %s \n nombre: %s \n apellido1: %s \n apellido2: %s \n ciclo: %s \n curso: %d \n eva1: %d \n eva2: %d \n eva3: %d \n notaFinal: %d\n\n", 
-			        rsApellidos.getString("dni"), 
-			        rsApellidos.getString("nombre"), 
-			        rsApellidos.getString("apellido1"), 
-			        rsApellidos.getString("apellido2"), 
-			        rsApellidos.getString("ciclo"), 
-			        rsApellidos.getInt("curso"), 
-			        rsApellidos.getInt("eva1"), 
-			        rsApellidos.getInt("eva2"), 
-			        rsApellidos.getInt("eva3"), 
-			        rsApellidos.getInt("notaFinal")
-			    ); 
-			} 
+				while (rsApellidos.next()) { 
+				    System.out.printf("dni: %s \n nombre: %s \n apellido1: %s \n apellido2: %s \n ciclo: %s \n curso: %d \n eva1: %d \n eva2: %d \n eva3: %d \n notaFinal: %d\n\n", 
+				        rsApellidos.getString("dni"), 
+				        rsApellidos.getString("nombre"), 
+				        rsApellidos.getString("apellido1"), 
+				        rsApellidos.getString("apellido2"), 
+				        rsApellidos.getString("ciclo"), 
+				        rsApellidos.getInt("curso"), 
+				        rsApellidos.getInt("eva1"), 
+				        rsApellidos.getInt("eva2"), 
+				        rsApellidos.getInt("eva3"), 
+				        rsApellidos.getInt("notaFinal")
+				    ); 
+				} 
+
+				}
+			}
 
 			System.out.println("============================="); 
 			System.out.println("======= FIN CONSULTA ========"); 
@@ -55,49 +58,51 @@ public class RetoGestionAlumnos {
 
 
 			// Imprime aprobados
-			PreparedStatement psAprobados = conexion.prepareStatement(sqlAprobados);
-			ResultSet rsAprobados = psAprobados.executeQuery();
+			try (PreparedStatement psAprobados = conexion.prepareStatement(sqlAprobados);
+					ResultSet rsAprobados = psAprobados.executeQuery()) {
 			
-			System.out.println("==========================");
-			System.out.println("======= APROBADOS ========");
-			System.out.println("==========================");
-			while (rsAprobados.next()) {
-				System.out.printf("dni: %s \n nombre: %s \n apellido1: %s \n apellido2: %s  \n ciclo: %s "
-			            + "\n curso: %d \n eva1: %d  \n eva2: %d \n eva3: %d  \n notaFinal: %d\n\n",
-			            rsAprobados.getString("dni"), 
-			            rsAprobados.getString("nombre"),
-			            rsAprobados.getString("apellido1"), 
-			            rsAprobados.getString("apellido2"),
-			            rsAprobados.getString("ciclo"), 
-			            rsAprobados.getInt("curso"), 
-			            rsAprobados.getInt("eva1"),
-			            rsAprobados.getInt("eva2"), 
-			            rsAprobados.getInt("eva3"), 
-			            rsAprobados.getInt("notaFinal"));
+					System.out.println("==========================");
+					System.out.println("======= APROBADOS ========");
+					System.out.println("==========================");
+					while (rsAprobados.next()) {
+						System.out.printf("dni: %s \n nombre: %s \n apellido1: %s \n apellido2: %s  \n ciclo: %s "
+					            + "\n curso: %d \n eva1: %d  \n eva2: %d \n eva3: %d  \n notaFinal: %d\n\n",
+					            rsAprobados.getString("dni"), 
+					            rsAprobados.getString("nombre"),
+					            rsAprobados.getString("apellido1"), 
+					            rsAprobados.getString("apellido2"),
+					            rsAprobados.getString("ciclo"), 
+					            rsAprobados.getInt("curso"), 
+					            rsAprobados.getInt("eva1"),
+					            rsAprobados.getInt("eva2"), 
+					            rsAprobados.getInt("eva3"), 
+					            rsAprobados.getInt("notaFinal"));
+					}
 			}
 			System.out.println("=============================");
 			System.out.println("======= FIN CONSULTA ========");
 			System.out.println("=============================");
 
 			// Contar suspensos
-			PreparedStatement psSuspensos = conexion.prepareStatement(sqlSuspensos);
-			ResultSet rsSuspensos = psSuspensos.executeQuery();
-			System.out.println("==========================");
-			System.out.println("======= SUSPENSOS ========");
-			System.out.println("==========================");
-			while (rsSuspensos.next()) {
-				System.out.printf("dni: %s \n nombre: %s \n apellido1: %s \n apellido2: %s  \n ciclo: %s "
-			            + "\n curso: %d \n eva1: %d  \n eva2: %d \n eva3: %d  \n notaFinal: %d\n\n",
-			            rsSuspensos.getString("dni"), 
-			            rsSuspensos.getString("nombre"),
-			            rsSuspensos.getString("apellido1"), 
-			            rsSuspensos.getString("apellido2"),
-			            rsSuspensos.getString("ciclo"), 
-			            rsSuspensos.getInt("curso"), 
-			            rsSuspensos.getInt("eva1"),
-			            rsSuspensos.getInt("eva2"), 
-			            rsSuspensos.getInt("eva3"), 
-			            rsSuspensos.getInt("notaFinal"));
+			try (PreparedStatement psSuspensos = conexion.prepareStatement(sqlSuspensos);
+					ResultSet rsSuspensos = psSuspensos.executeQuery()) {
+					System.out.println("==========================");
+					System.out.println("======= SUSPENSOS ========");
+					System.out.println("==========================");
+					while (rsSuspensos.next()) {
+						System.out.printf("dni: %s \n nombre: %s \n apellido1: %s \n apellido2: %s  \n ciclo: %s "
+					            + "\n curso: %d \n eva1: %d  \n eva2: %d \n eva3: %d  \n notaFinal: %d\n\n",
+					            rsSuspensos.getString("dni"), 
+					            rsSuspensos.getString("nombre"),
+					            rsSuspensos.getString("apellido1"), 
+					            rsSuspensos.getString("apellido2"),
+					            rsSuspensos.getString("ciclo"), 
+					            rsSuspensos.getInt("curso"), 
+					            rsSuspensos.getInt("eva1"),
+					            rsSuspensos.getInt("eva2"), 
+					            rsSuspensos.getInt("eva3"), 
+					            rsSuspensos.getInt("notaFinal"));
+					}
 			}
 			System.out.println("=============================");
 			System.out.println("======= FIN CONSULTA ========");

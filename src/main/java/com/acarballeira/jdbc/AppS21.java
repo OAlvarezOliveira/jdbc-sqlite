@@ -17,8 +17,8 @@ public class AppS21 {
 		try (Connection conexion = DriverManager.getConnection(URL);){
 			
 			String sql = "SELECT * FROM alumno";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ResultSet resultado = ps.executeQuery();
+			try (PreparedStatement ps = conexion.prepareStatement(sql);
+					ResultSet resultado = ps.executeQuery()) {
 			
 			if(resultado.next()) {
 				
@@ -38,6 +38,7 @@ public class AppS21 {
 	            
 	            System.err.println(alumnoDB);
 
+			}
 			}
 			
 			

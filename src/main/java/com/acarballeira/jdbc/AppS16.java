@@ -15,8 +15,7 @@ public class AppS16 {
 
 	public static void main(String[] args) {
 
-		try (Connection conexion = DriverManager.getConnection(url);
-			 Statement sentencia = conexion.createStatement()) {
+		try (Connection conexion = DriverManager.getConnection(url)) {
 			
 			int opcion;
 			
@@ -65,40 +64,42 @@ public class AppS16 {
 								VALUES (?, ?, ?, ?, ?, ?)
 								""";
 
-						PreparedStatement ps = conexion.prepareStatement(insertar);
-						ps.setString(1, dni);
-						ps.setString(2, nombre);
-						ps.setString(3, apellido1);
-						ps.setString(4, apellido2);
-						ps.setString(5, ciclo);
-						ps.setInt(6, curso);
-						ps.executeUpdate();
+						try (PreparedStatement ps = conexion.prepareStatement(insertar)) {
+							ps.setString(1, dni);
+							ps.setString(2, nombre);
+							ps.setString(3, apellido1);
+							ps.setString(4, apellido2);
+							ps.setString(5, ciclo);
+							ps.setInt(6, curso);
+							ps.executeUpdate();
+						}
 						
 
 				}
 				case 2 -> {
 					System.out.println("Listado de alumnos");	
 					
-					ResultSet resultado = sentencia.executeQuery("SELECT * FROM alumno ORDER BY apellido1, apellido2, nombre");
-						
-					while (resultado.next()) {
-						Object eva1 = resultado.getObject("eva1");
-						Object eva2 = resultado.getObject("eva2");
-						Object eva3 = resultado.getObject("eva3");
-						Object notaFinalBD = resultado.getObject("notaFinal");
+					try (Statement sentencia = conexion.createStatement();
+						 ResultSet resultado = sentencia.executeQuery("SELECT * FROM alumno ORDER BY apellido1, apellido2, nombre")) {
+						while (resultado.next()) {
+							Object eva1 = resultado.getObject("eva1");
+							Object eva2 = resultado.getObject("eva2");
+							Object eva3 = resultado.getObject("eva3");
+							Object notaFinalBD = resultado.getObject("notaFinal");
 
-						System.out.println(
-							resultado.getString("dni") + " - " +
-							resultado.getString("apellido1") + " " +
-							resultado.getString("apellido2") + ", " +
-							resultado.getString("nombre") + " - " +
-							resultado.getString("ciclo") + " - Curso " +
-							resultado.getInt("curso") + " - Notas: " +
-							(eva1 == null ? "sin nota" : eva1) + ", " +
-							(eva2 == null ? "sin nota" : eva2) + ", " +
-							(eva3 == null ? "sin nota" : eva3) + " - Final: " +
-							(notaFinalBD == null ? "sin calcular" : notaFinalBD)
-						);
+							System.out.println(
+								resultado.getString("dni") + " - " +
+								resultado.getString("apellido1") + " " +
+								resultado.getString("apellido2") + ", " +
+								resultado.getString("nombre") + " - " +
+								resultado.getString("ciclo") + " - Curso " +
+								resultado.getInt("curso") + " - Notas: " +
+								(eva1 == null ? "sin nota" : eva1) + ", " +
+								(eva2 == null ? "sin nota" : eva2) + ", " +
+								(eva3 == null ? "sin nota" : eva3) + " - Final: " +
+								(notaFinalBD == null ? "sin calcular" : notaFinalBD)
+							);
+						}
 					}
 				}
 				case 3 -> {
@@ -119,85 +120,42 @@ public class AppS16 {
 						
 					switch (opcion1) {
 					case 1:
-						String update = "UPDATE alumno SET nombre = ? WHERE dni = ?";
 						System.out.println("Introduce el nuevo NOMBRE:");
 						String nombre = teclado.nextLine();
-						
-						try (PreparedStatement psModificar = conexion.prepareStatement(update)) {
-							psModificar.setString(1, nombre);
-							psModificar.setString(2, dni);
-							int filas = psModificar.executeUpdate();
-							System.out.println(filas > 0 ? "Nombre actualizado correctamente" : "No existe ningún alumno con ese DNI");
-						}
+						ejecutarUpdate(conexion, "nombre = ?", "Nombre actualizado correctamente", nombre, dni);
 						break;
 						
 					case 2:
-						String update2 = "UPDATE alumno SET apellido1 = ? WHERE dni = ?";
 						System.out.println("Introduce el nuevo Apellido1:");
 						String nuevoApellido1 = teclado.nextLine();
-						
-						try (PreparedStatement psModificar2 = conexion.prepareStatement(update2)) {
-							psModificar2.setString(1, nuevoApellido1);
-							psModificar2.setString(2, dni);
-							int filas2 = psModificar2.executeUpdate();
-							System.out.println(filas2 > 0 ? "Apellido1 actualizado correctamente" : "No existe ningún alumno con ese DNI");
-						}
+						ejecutarUpdate(conexion, "apellido1 = ?", "Apellido1 actualizado correctamente", nuevoApellido1, dni);
 						break;	
 						
 					case 3:
-						String update3 = "UPDATE alumno SET apellido2 = ? WHERE dni = ?";
 						System.out.println("Introduce el nuevo Apellido2:");
 						String nuevoApellido3 = teclado.nextLine();
-						
-						try (PreparedStatement psModificar3 = conexion.prepareStatement(update3)) {
-							psModificar3.setString(1, nuevoApellido3);
-							psModificar3.setString(2, dni);
-							int filas3 = psModificar3.executeUpdate();
-							System.out.println(filas3 > 0 ? "Apellido2 actualizado correctamente" : "No existe ningún alumno con ese DNI");
-						}
+						ejecutarUpdate(conexion, "apellido2 = ?", "Apellido2 actualizado correctamente", nuevoApellido3, dni);
 						break;
 						
 					case 4:
-						String update4 = "UPDATE alumno SET ciclo = ? WHERE dni = ?";
 						System.out.println("Introduce el nuevo Ciclo:");
 						String nuevoCiclo = teclado.nextLine();
-						
-						try (PreparedStatement psModificar4 = conexion.prepareStatement(update4)) {
-							psModificar4.setString(1, nuevoCiclo);
-							psModificar4.setString(2, dni);
-							int filas4 = psModificar4.executeUpdate();
-							System.out.println(filas4 > 0 ? "Ciclo actualizado correctamente" : "No existe ningún alumno con ese DNI");
-						}
+						ejecutarUpdate(conexion, "ciclo = ?", "Ciclo actualizado correctamente", nuevoCiclo, dni);
 						break;
 						
 					case 5:
-						String update5 = "UPDATE alumno SET curso = ? WHERE dni = ?";
 						System.out.println("Introduce el nuevo Curso:");
 						int nuevoCurso = Integer.parseInt(teclado.nextLine());
-						
-						try (PreparedStatement psModificar5 = conexion.prepareStatement(update5)) {
-							psModificar5.setInt(1, nuevoCurso);
-							psModificar5.setString(2, dni);
-							int filas5 = psModificar5.executeUpdate();
-							System.out.println(filas5 > 0 ? "Curso actualizado correctamente" : "No existe ningún alumno con ese DNI");
-						}
+						ejecutarUpdate(conexion, "curso = ?", "Curso actualizado correctamente", nuevoCurso, dni);
 						break;
 						
 					case 6:
-						String update6 = "UPDATE alumno SET dni = ? WHERE dni = ?";
 						System.out.println("Introduce el nuevo DNI:");
 						String nuevoDni = teclado.nextLine();
-						
-						try (PreparedStatement psModificar6 = conexion.prepareStatement(update6)) {
-							psModificar6.setString(1, nuevoDni);
-							psModificar6.setString(2, dni);
-							int filas6 = psModificar6.executeUpdate();
-							System.out.println(filas6 > 0 ? "DNI actualizado correctamente" : "No existe ningún alumno con ese DNI");
-						}
+						ejecutarUpdate(conexion, "dni = ?", "DNI actualizado correctamente", nuevoDni, dni);
 						break;
 						
 					case 7:
-						String update7 = "UPDATE alumno SET eva1 = ?, eva2 = ?, eva3 = ?, notaFinal = ? WHERE dni = ?";
 						System.out.println("Introduce la nota de la evaluación 1:");
 						int notaEva1 = Integer.parseInt(teclado.nextLine());
 						
@@ -209,15 +167,8 @@ public class AppS16 {
 						
 						int notaFinal = (notaEva1 + notaEva2 + notaEva3) / 3;
 
-						try (PreparedStatement psModificar7 = conexion.prepareStatement(update7)) {
-							psModificar7.setInt(1, notaEva1);
-							psModificar7.setInt(2, notaEva2);
-							psModificar7.setInt(3, notaEva3);
-							psModificar7.setInt(4, notaFinal);
-							psModificar7.setString(5, dni);
-							int filas7 = psModificar7.executeUpdate();
-							System.out.println(filas7 > 0 ? "Notas actualizadas correctamente" : "No existe ningún alumno con ese DNI");
-						}
+						ejecutarUpdate(conexion, "eva1 = ?, eva2 = ?, eva3 = ?, notaFinal = ?",
+								"Notas actualizadas correctamente", notaEva1, notaEva2, notaEva3, notaFinal, dni);
 						break;
 
 					default:
@@ -250,6 +201,23 @@ public class AppS16 {
 
 		} catch (SQLException e) {
 			System.err.println("Error en la base de datos: " + e.getMessage());
+		}
+	}
+
+	// Ejecuta UPDATE alumno SET <asignacion> WHERE dni = ? con los valores dados (el último es el DNI)
+	private static void ejecutarUpdate(Connection conexion, String asignacion, String mensajeOk, Object... valores) throws SQLException {
+		String update = "UPDATE alumno SET " + asignacion + " WHERE dni = ?";
+		
+		try (PreparedStatement psModificar = conexion.prepareStatement(update)) {
+			for (int k = 0; k < valores.length; k++) {
+				if (valores[k] instanceof Integer) {
+					psModificar.setInt(k + 1, (Integer) valores[k]);
+				} else {
+					psModificar.setString(k + 1, (String) valores[k]);
+				}
+			}
+			int filas = psModificar.executeUpdate();
+			System.out.println(filas > 0 ? mensajeOk : "No existe ningún alumno con ese DNI");
 		}
 	}
 }
