@@ -1,35 +1,82 @@
 package gestorProductos;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Main {
 
 	public static void main(String[] args) {
-		
-//		ProductoDAO.insertar(new Producto("P002", "Raton", "Perifericos", 12.50, 30));
-//		ProductoDAO.insertar(new Producto("P003", "Monitor", "Pantallas", 149.99, 5));
-		for (Producto p : ProductoDAO.listarTodos()) {
-		    System.out.println(p);
-		}
-		
-		System.out.println(ProductoDAO.buscarPorNombre("rat"));   // debe encontrar Raton
-		System.out.println(ProductoDAO.buscarPorNombre("TEC"));   // debe encontrar Teclado (mayúsculas)
-		System.out.println(ProductoDAO.buscarPorNombre("zzz"));   // lista vacía []
-		
-		System.out.println(ProductoDAO.buscarPorCategoriaStockMenor("perifericos", 20)); // solo Teclado (stock 15)
-		System.out.println(ProductoDAO.buscarPorCategoriaStockMenor("Perifericos", 50)); // Teclado y Raton
-		System.out.println(ProductoDAO.buscarPorCategoriaStockMenor("Pantallas", 3));    // []
-		
-		
-		System.out.println(ProductoDAO.actualizarPrecio("P001", 29.90)); // true
-		System.out.println(ProductoDAO.actualizarPrecio("P999", 10.0));  // false (no existe)
-		System.out.println(ProductoDAO.buscarPorNombre("tec"));          // precio 29,90
-		
-		ProductoDAO.insertar(new Producto("P999", "Temporal", "Pruebas", 1.0, 1));
-		System.out.println(ProductoDAO.eliminar("P999"));   // true
-		System.out.println(ProductoDAO.eliminar("P999"));   // false (ya no existe)
-		System.out.println(ProductoDAO.listarTodos());      // sin P999
-		System.out.println(ProductoDAO.estadisticas());      
-		System.out.println(ProductoDAO.estadisticasPorCategoria());
 
+		Scanner sc = new Scanner(System.in);
+		int opcion;
+		ProductoDAO.crearTabla();
+
+		do {
+			System.out.printf("1. Insertar producto\n" + "2. Listar todos\n" + "3. Actualizar precio\n" + "0. Salir\n");
+
+			System.out.println("Elige una opcion");
+			opcion = Integer.parseInt(sc.nextLine());
+
+			switch (opcion) {
+			case 1:
+
+				try {
+					System.out.println("Introduce Codigo");
+					String codigo = sc.nextLine();
+					System.out.println("Introduce nombre");
+					String nombre = sc.nextLine();
+					System.out.println("Introduce categoria");
+					String categoria = sc.nextLine();
+					System.out.println("Elige  stock");
+					int stock = Integer.parseInt(sc.nextLine());
+					System.out.println("Introduce precio");
+					double precio = Double.parseDouble(sc.nextLine());
+
+					// String codigo, String nombre, String categoria, double precio, int stock)
+					Producto pInsertar = new Producto(codigo, nombre, categoria, precio, stock);
+					if (ProductoDAO.insertar(pInsertar)) {
+						System.out.println("Producto Insertado");
+					} else {
+						System.out.println("Producto No Insertado");
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Stock y precio deben ser numeros");
+				} catch (IllegalArgumentException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 2:
+				ArrayList<Producto> lista = new ArrayList<Producto>();
+				lista = ProductoDAO.listarTodos();
+
+				for (Producto producto : lista) {
+					System.out.println(producto);
+				}
+				break;
+			case 3:
+				System.out.println("Introduce Codigo");
+				String codigoNuevo = sc.nextLine();
+				System.out.println("Introduce el nuevo Precio");
+				double precioNuevo = Double.parseDouble(sc.nextLine());
+				if (ProductoDAO.actualizarPrecio(codigoNuevo, precioNuevo)) {
+
+					System.out.println("Precio actualizado");
+
+				} else {
+
+					System.out.println("Precio no actualizado");
+
+				}
+				break;
+			case 0:
+				System.out.println("Fin de programa");
+				break;
+			default:
+				System.out.println("Opcion no valida");
+				break;
+			}
+		} while (opcion != 0);
+		sc.close();
 	}
 
 }
