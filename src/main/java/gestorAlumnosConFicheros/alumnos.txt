@@ -1,0 +1,7 @@
+Ana;8.5
+Luis;4.2
+Marta;7.0
+Pedro;3.5
+Lucia;9.1
+Carlos;5.0
+Oscar;10.0

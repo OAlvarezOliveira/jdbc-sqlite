@@ -6,11 +6,13 @@ import java.util.Scanner;
 
 public class Main {
 
-
+	private static Scanner sc = new Scanner(System.in);
+	
 	public static void main(String[] args) {
 
-		Scanner sc = new Scanner(System.in);
+
 		int opcion = -1;
+		boolean estado = false;
 
 		try {
 			TareaDAO.crearTabla();
@@ -31,8 +33,12 @@ public class Main {
 					try {
 						System.out.println("Introduce el titulo de la Tarea");
 						String titulo = sc.nextLine();
-						System.out.println("Introduce estado (true/false)");
-						boolean estado = Boolean.parseBoolean(sc.nextLine());
+						try {
+							System.out.println("Introduce estado (true/false)");
+							estado = Boolean.parseBoolean(sc.nextLine());
+						} catch (Exception e) {
+							System.out.println("Error: " + e.getMessage());
+						}
 
 						Tarea pInsertar = new Tarea(titulo, estado);
 						TareaDAO.insertar(pInsertar);

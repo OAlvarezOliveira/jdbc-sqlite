@@ -1,0 +1,23 @@
+
+
+
+BufferedReader br = new BufferedReader(new FileReader(archivo));
+	Buffer de lectura para el archivo que contiene los datos iniciales , 
+	lee el Objeto File archivo , mas tarde se recorre con el método readLine para procesar 
+	los datos.	
+
+BufferedWriter bw = new BufferedWriter(new FileWriter(archivoSuspensos));
+	Buffer de escritura contenido dentro de un condicional que discrimina la línea que este buffer va a escribir 
+	en archivoSuspensos
+	
+BufferedWriter bw2 = new BufferedWriter(new FileWriter(archivo, true)))
+	Buffer de escritura encargado de añadir el alumno extra , se instancia con la propiedad True para permitir añadir una 
+	línea nueva sin sobrescribir el archivo por completo.
+	
+
+¿Por qué cambia el contenido de resumen.txt cuando volvemos a ejecutar la aplicación?
+	
+Por que el BufferedReader br vuelve a leer el archivo desde cero y al cambiar los valores de notas que se usan en los cálculos de 
+las estadísticas de salida , los valores finales calculados cambian.
+
+	

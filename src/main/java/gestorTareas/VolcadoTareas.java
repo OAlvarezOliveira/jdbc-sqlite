@@ -11,24 +11,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class VolcadoTareas {
+	
+	private static final File ARCHIVO_SALIDA = new File("src/main/java/gestorTareas/archivoSalida.txt");
 
 	public static void main(String[] args) {
 
-
-
-		File archivoSalida = new File("src/main/java/gestorTareas/archivoSalida.txt");
 
 		try {
 			TareaDAO.crearTabla();
 		} catch (SQLException e) {
 			System.out.println("Error:" + e);
 		}
-		escribeArchivo(archivoSalida);
-		leeArchivo(archivoSalida);
+		escribeArchivo();
+		leeArchivo();
 	}
 
-	private static void escribeArchivo(File archivoSalida) {
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivoSalida))) {
+	private static void escribeArchivo() {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_SALIDA))) {
 
 			ArrayList<Tarea> lista = TareaDAO.listarTodos();
 
@@ -44,13 +43,13 @@ public class VolcadoTareas {
 		}
 	}
 
-	private static void leeArchivo(File archivoSalida) {
+	private static void leeArchivo() {
 		int cuentaLineaMala = 0;
 		int cuentaLineaBuena = 0;
 		int cuentaTareasCompletadas = 0;
 		String linea;
 		String[] campos;
-		try (BufferedReader br = new BufferedReader(new FileReader(archivoSalida))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_SALIDA))) {
 
 			while ((linea = br.readLine()) != null) {
 

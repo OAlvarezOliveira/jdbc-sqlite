@@ -1,0 +1,5 @@
+RESUMEN DEL GRUPO
+Total de alumnos: 7
+Aprobados: 5
+Suspensos: 2
+Nota media: 6.757142857142857
