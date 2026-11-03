@@ -23,22 +23,22 @@ public class AppS45 {
 			int cantidadAlumnos = 0;
 			double nota = 0;
 			int cantidadAsignaturas = 0;
-			System.out.print("Cuantos Alumnos deseas introducir: ");
+			System.out.println("Cuantos Alumnos deseas introducir: ");
 			try {
 
 				cantidadAlumnos = Integer.parseInt(sc.nextLine());
 			} catch (NumberFormatException e) {
 				System.out.println("Error:" + e);
-				return; // Si el número total de alumnos está mal, cerramos el programa de forma segura
+				return; 
 			}
 
 			for (int i = 0; i < cantidadAlumnos; i++) {
 				int filasMatricula = 0;
-				System.out.print("Nombre: ");
+				System.out.println("Nombre: ");
 				String nombre = sc.nextLine();
-				System.out.print("Apellidos: ");
+				System.out.println("Apellidos: ");
 				String apellidos = sc.nextLine();
-				System.out.print("Nota: ");
+				System.out.println("Nota: ");
 
 				try {
 					nota = Double.parseDouble(sc.nextLine().replace(',', '.'));
@@ -57,7 +57,7 @@ public class AppS45 {
 						int idAlumno = rs.getInt(1);
 
 						try {
-							System.out.print("En cuantas asignaturas deseas matricular: ");
+							System.out.println("En cuantas asignaturas deseas matricular: ");
 							cantidadAsignaturas = Integer.parseInt(sc.nextLine());
 						} catch (NumberFormatException e) {
 							System.out.println("Error:" + e);
