@@ -1,0 +1,38 @@
+[
+  {
+    "dni": "12345678A",
+    "nombre": "Ana",
+    "apellido1": "García",
+    "apellido2": "López",
+    "ciclo": "DAM",
+    "curso": 2,
+    "eva1": 1,
+    "eva2": 7,
+    "eva3": 8,
+    "notaFinal": 8
+  },
+  {
+    "dni": "87654321B",
+    "nombre": "Luis",
+    "apellido1": "Pérez",
+    "apellido2": "Sánchez",
+    "ciclo": "DAM",
+    "curso": 2,
+    "eva1": 1,
+    "eva2": 6,
+    "eva3": 7,
+    "notaFinal": 7
+  },
+  {
+    "dni": "45678912C",
+    "nombre": "Marta",
+    "apellido1": "Rodríguez",
+    "apellido2": "Fernández",
+    "ciclo": "DAM",
+    "curso": 2,
+    "eva1": 1,
+    "eva2": 9,
+    "eva3": 8,
+    "notaFinal": 9
+  }
+]

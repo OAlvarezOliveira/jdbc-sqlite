@@ -14,6 +14,8 @@ public class ConexionDB {
 	    public static Connection conectaDB() throws SQLException {
 	        return DriverManager.getConnection(URL, USER, PASS);
 	    }
+	    
+	    
 	}
 	
 
