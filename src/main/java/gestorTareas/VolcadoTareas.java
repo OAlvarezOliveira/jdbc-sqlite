@@ -66,7 +66,7 @@ public class VolcadoTareas {
 
 							cuentaLineaBuena++;
 
-							if (Boolean.parseBoolean(campos[2])) {
+							if (valorBooleano.equals("true")) {
 								cuentaTareasCompletadas++;
 							}
 						} else {

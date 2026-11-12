@@ -84,8 +84,7 @@ public class AppS47 {
 					ps.setString(1, nombre);
 					ps.setString(2, apellidos);
 					ps.setDouble(3, nota);
-					contador = +ps.executeUpdate();
-					ps.executeUpdate();
+					contador += ps.executeUpdate();
 
 					System.out.printf("Alumno Insertado: %s %s \n", nombre, apellidos);
 					System.out.println("=======================");
