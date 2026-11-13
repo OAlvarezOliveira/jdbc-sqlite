@@ -1,5 +1,35 @@
-nombre;apellidos;nota
-Ana;Garcia;8.5
-Luis;Perez;6.0
-Juan1;Fernando;10
-Marta;Ubierte2;9.0
+id;nombre;apellidos;nota
+1;Ana;Lopez Perez;7,50
+2;Pablo;Garcia Diaz;5,50
+3;Lucia;Rodriguez Gil;9,00
+7;Carlos;Martínez López;8,50
+8;oscar ;alvarez;10,00
+9;marcos;fernadez rodriguez;5,60
+10;sabela;lama;7,80
+11;Carlos;Gonzalez Gonzalez;7,00
+13;Carlos;Gonzalez Gonzalez;10,00
+14;laura;perez garcia;8,50
+15;laura;perez garcia;8,50
+16;oscar;perez;8,70
+17;Ana;Garcia;8,50
+18;Luis;Perez;6,00
+19;Marta;Lopez;9,00
+21;Ana;Garcia;8,50
+22;Luis;Perez;6,00
+23;Marta;Lopez;9,00
+25;Ana;Garcia;8,50
+26;Luis;Perez;6,00
+27;Marta;Lopez;9,00
+28;Pedro;Fernandez;7,50
+29;Ana;Garcia;8,50
+30;Luis;Perez;6,00
+31;Marta;Lopez;9,00
+32;Pedro;Fernandez;7,50
+33;Pedro;VaAFallar;8,60
+34;Juan;Fernando;10,00
+35;PedroM;VaAFallar;10,00
+36;Juan1;Fernando;10,00
+37;PedroM2;VaAFallar;10,00
+38;Marta;Ubierte;9,00
+39;Marta;Ubierte2;9,00
+40;Marta;Rodríguez;9,00

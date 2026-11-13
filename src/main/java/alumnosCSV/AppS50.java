@@ -15,7 +15,7 @@ import com.google.gson.reflect.TypeToken;
 public class AppS50 {
 
 	private static String SQL_BUSCAR = "SELECT COUNT(*) FROM alumnos WHERE nombre =? AND apellidos =?";
-	private static String SQL_INSERTAR = "";
+	private static String SQL_INSERTAR = "INSERT INTO alumnos(nombre , apellidos,nota) VALUES (?,?,?)";
 
 	public static void main(String[] args) {
 		Gson gson = new Gson();
@@ -52,7 +52,7 @@ public class AppS50 {
 						psInsertar.setString(1, a.getNombre());
 						psInsertar.setString(2, a.getApellido1());
 						psInsertar.setFloat(3, a.getNotaFinal());
-						psInsertar.executeUpdate(SQL_INSERTAR);
+						psInsertar.executeUpdate();
 
 					}
 

@@ -1,0 +1,176 @@
+[
+  {
+    "id": 1,
+    "nombre": "Ana",
+    "apellidos": "López Pérez",
+    "nota": 7.5
+  },
+  {
+    "id": 2,
+    "nombre": "Pablo",
+    "apellidos": "García Díaz",
+    "nota": 5.5
+  },
+  {
+    "id": 3,
+    "nombre": "Lucía",
+    "apellidos": "Rodríguez Gil",
+    "nota": 9.0
+  },
+  {
+    "id": 5,
+    "nombre": "Carlos",
+    "apellidos": "Martínez López",
+    "nota": 8.5
+  },
+  {
+    "id": 6,
+    "nombre": "Elena",
+    "apellidos": "Fernánez castro",
+    "nota": 9.2
+  },
+  {
+    "id": 7,
+    "nombre": "Marcos",
+    "apellidos": "Fernández Rodríguez\t",
+    "nota": 5.6
+  },
+  {
+    "id": 8,
+    "nombre": "Sabela",
+    "apellidos": "Lama",
+    "nota": 7.8
+  },
+  {
+    "id": 9,
+    "nombre": "Carlos",
+    "apellidos": "González González\t",
+    "nota": 4.5
+  },
+  {
+    "id": 10,
+    "nombre": "Carlos",
+    "apellidos": "González Gonzálezz",
+    "nota": 7.0
+  },
+  {
+    "id": 11,
+    "nombre": "Laura",
+    "apellidos": "Pérez garcía",
+    "nota": 8.5
+  },
+  {
+    "id": 12,
+    "nombre": "Ana",
+    "apellidos": "García",
+    "nota": 8.5
+  },
+  {
+    "id": 13,
+    "nombre": "Luis",
+    "apellidos": "Pérez",
+    "nota": 6.0
+  },
+  {
+    "id": 14,
+    "nombre": "Marta",
+    "apellidos": "López",
+    "nota": 9.0
+  },
+  {
+    "id": 15,
+    "nombre": "Pedro",
+    "apellidos": "Fernández",
+    "nota": 7.5
+  },
+  {
+    "id": 16,
+    "nombre": "Sofía",
+    "apellidos": "Romero",
+    "nota": 8.0
+  },
+  {
+    "id": 17,
+    "nombre": "Diego",
+    "apellidos": "Santos",
+    "nota": 7.0
+  },
+  {
+    "id": 18,
+    "nombre": "Laura",
+    "apellidos": "Vázquez",
+    "nota": 8.5
+  },
+  {
+    "id": 19,
+    "nombre": "Carmen",
+    "apellidos": "Fernández",
+    "nota": 9.0
+  },
+  {
+    "id": 26,
+    "nombre": "Laura",
+    "apellidos": "Vázquez",
+    "nota": 8.5
+  },
+  {
+    "id": 27,
+    "nombre": "Carmen",
+    "apellidos": "Fernández",
+    "nota": 9.0
+  },
+  {
+    "id": 28,
+    "nombre": "Irene",
+    "apellidos": "Suárez",
+    "nota": 8.0
+  },
+  {
+    "id": 29,
+    "nombre": "Hugo",
+    "apellidos": "Domínguez",
+    "nota": 7.5
+  },
+  {
+    "id": 32,
+    "nombre": "Nuria",
+    "apellidos": "Castro",
+    "nota": 8.5
+  },
+  {
+    "id": 33,
+    "nombre": "Adrián",
+    "apellidos": "Varela",
+    "nota": 7.0
+  },
+  {
+    "id": 36,
+    "nombre": "Claudia",
+    "apellidos": "Santos",
+    "nota": 8.0
+  },
+  {
+    "id": 37,
+    "nombre": "Mario",
+    "apellidos": "Iglesias",
+    "nota": 7.5
+  },
+  {
+    "id": 38,
+    "nombre": "Ana",
+    "apellidos": "García López",
+    "nota": 8.0
+  },
+  {
+    "id": 39,
+    "nombre": "Luis",
+    "apellidos": "Pérez Sánchez",
+    "nota": 7.0
+  },
+  {
+    "id": 40,
+    "nombre": "Marta",
+    "apellidos": "Rodríguez Fernández",
+    "nota": 9.0
+  }
+]
